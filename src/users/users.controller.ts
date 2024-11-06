@@ -11,6 +11,7 @@ import { Repository } from 'typeorm';
 import { User } from './users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserDTO } from './DTO/users.dto';
+import { Public } from 'src/auth/auth.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -19,11 +20,13 @@ export class UsersController {
     private userRepository: Repository<User>,
   ) {}
 
+  @Public()
   @Get()
   getUsersList() {
     return this.userRepository.find();
   }
 
+  @Public()
   @Get(':id')
   async getUserById(@Param('id') id: number) {
     const user = await this.userRepository.findOneBy({ id });
@@ -34,6 +37,7 @@ export class UsersController {
     return user;
   }
 
+  @Public()
   @Post()
   createUser(@Body() userDto: UserDTO) {
     const user = this.userRepository.create();
